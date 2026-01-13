@@ -1,6 +1,5 @@
 package cn.xylose.btw.bettergamesetting.mixin.client.gui;
 
-import cn.xylose.btw.bettergamesetting.config.BGSConfig;
 import cn.xylose.btw.bettergamesetting.util.GuiScreenPanoramaHelp;
 import net.minecraft.src.*;
 import net.minecraft.src.LoadingScreenRenderer;

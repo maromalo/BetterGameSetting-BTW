@@ -2,12 +2,16 @@ package cn.xylose.btw.bettergamesetting.mixin.client.renderer;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.src.*;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.*;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Constant;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
@@ -15,7 +19,6 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 public abstract class EntityRenderMixin {
     @Shadow private float farPlaneDistance;
     @Shadow private Minecraft mc;
-    @Shadow protected abstract void setupFog(int par1, float par2);
     @Shadow float fogColorRed;
     @Shadow float fogColorGreen;
     @Shadow float fogColorBlue;
@@ -23,6 +26,7 @@ public abstract class EntityRenderMixin {
     @Shadow private float debugCamFOV;
     @Shadow private float fovModifierHandPrev;
     @Shadow private float fovModifierHand;
+    @Shadow protected abstract void setupFog(int par1, float par2);
 
     @ModifyConstant(method = "updateRenderer", constant = @Constant(intValue = 3))
     private int modifyRD(int constant) {
@@ -64,22 +68,18 @@ public abstract class EntityRenderMixin {
         return original;
     }
 
-    /**
-     * @author Xy_Lose
-     * @reason break Fps limit
-     */
-    @Overwrite
-    public static int performanceToFps(int par0) {
-        if (!(Minecraft.getMinecraft().gameSettings.limitFramerate >= 260)) {
+    @ModifyReturnValue(method = "performanceToFps", at = @At(value = "RETURN"))
+    private static int limitToFps(int original) {
+        if (!(Minecraft.getMinecraft().gameSettings.limitFramerate == 260)) {
             return Minecraft.getMinecraft().gameSettings.limitFramerate;
         }
-        return 9999;
+        return Integer.MAX_VALUE;
     }
 
-//    @WrapOperation(method = "addRainParticles", at = @At(value = "INVOKE", target = "Lnet/minecraft/WorldClient;playSound(DDDLjava/lang/String;FFZ)V"))
-//    private void modifyRainSound(WorldClient instance, double v, double par1, double par3, String par5, float par7Str, float par8, boolean par9, Operation<Void> original) {
-//        this.mc.theWorld.playSound(v, par1, par3, par5, ((IGameSetting) Minecraft.getMinecraft().gameSettings).getWeatherVolume() * par7Str, par8, par9);
-//    }
+    @WrapOperation(method = "addRainParticles", at = @At(value = "INVOKE", target = "Lnet/minecraft/src/WorldClient;playSound(DDDLjava/lang/String;FFZ)V"))
+    private void modifyRainSound(WorldClient instance, double v, double par1, double par3, String par5, float par7Str, float par8, boolean par9, Operation<Void> original) {
+        this.mc.theWorld.playSound(v, par1, par3, par5, Minecraft.getMinecraft().gameSettings.getWeatherVolume() * par7Str, par8, par9);
+    }
 
     @ModifyReturnValue(method = "getFOVModifier", at = @At(value = "RETURN", ordinal = 1))
     private float getFOVModifierModern(float original, @Local(argsOnly = true) float par1, @Local(argsOnly = true) boolean par2, @Local(name = "var4") float var4) {

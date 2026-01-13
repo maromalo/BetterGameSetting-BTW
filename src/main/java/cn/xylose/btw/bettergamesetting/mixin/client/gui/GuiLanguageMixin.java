@@ -16,7 +16,6 @@ import java.util.List;
 public class GuiLanguageMixin extends GuiScreen {
     @Shadow private GuiSmallButton doneButton;
     @Shadow @Final private GameSettings theGameSettings;
-    @Shadow private GuiSmallButton downloadTranslations;
     @Shadow private GuiSlotLanguage languageList;
 
     @Unique private GuiTextField searchField;

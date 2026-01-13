@@ -10,7 +10,6 @@ import cn.xylose.btw.bettergamesetting.util.ScreenUtil;
 import net.minecraft.src.*;
 import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -20,75 +19,41 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.*;
 
 @SuppressWarnings("unchecked")
-@Mixin(GuiCreateWorld.class)
+@Mixin(value = GuiCreateWorld.class, priority = 1001)
 public abstract class GuiCreateWorldMixin extends GuiScreen {
 
-    @Shadow
-    private GuiScreen parentGuiScreen;
-    @Shadow
-    private boolean isHardcore;
-    @Shadow
-    private String localizedNewWorldText;
-    @Shadow
-    private String gameMode;
-    @Shadow
-    private String seed;
-    @Shadow
-    private boolean generateStructures;
-    @Shadow
-    private boolean bonusItems;
-    @Shadow
-    private boolean commandsAllowed;
-    @Shadow
-    private GuiTextField textboxSeed;
-    @Shadow
-    private GuiTextField textboxWorldName;
-    @Shadow
-    private GuiButton buttonAllowCommands;
-    @Shadow
-    private GuiButton buttonGameMode;
-    @Shadow
-    private GuiButton buttonBonusItems;
-    @Shadow
-    private GuiButton buttonWorldType;
-    @Shadow
-    private GuiButton buttonGenerateStructures;
-    @Shadow
-    private GuiButton buttonCustomize;
-    @Shadow
-    private GuiButton buttonDifficultyLevel;
-    @Shadow
-    private LockButton buttonLockDifficulty;
-    @Shadow
-    private int worldTypeId;
-    @Shadow
-    private boolean commandsToggled;
-    @Shadow
-    private GuiButton moreWorldOptions;
-    @Shadow
-    private boolean moreOptions;
+    @Shadow private GuiScreen parentGuiScreen;
+    @Shadow private boolean isHardcore;
+    @Shadow private String localizedNewWorldText;
+    @Shadow private String gameMode;
+    @Shadow private String seed;
+    @Shadow private boolean generateStructures;
+    @Shadow private boolean bonusItems;
+    @Shadow private boolean commandsAllowed;
+    @Shadow private GuiTextField textboxSeed;
+    @Shadow private GuiTextField textboxWorldName;
+    @Shadow private GuiButton buttonAllowCommands;
+    @Shadow private GuiButton buttonGameMode;
+    @Shadow private GuiButton buttonBonusItems;
+    @Shadow private GuiButton buttonWorldType;
+    @Shadow private GuiButton buttonGenerateStructures;
+    @Shadow private GuiButton buttonCustomize;
+    @Shadow private GuiButton buttonDifficultyLevel;
+    @Shadow private LockButton buttonLockDifficulty;
+    @Shadow private int worldTypeId;
+    @Shadow private boolean commandsToggled;
+    @Shadow private GuiButton moreWorldOptions;
+    @Shadow private boolean moreOptions;
+    @Shadow private int difficultyID;
+    @Shadow private void makeUseableName() {}
+    @Shadow protected abstract void updateButtonText();
 
-    @Shadow
-    private void makeUseableName() {
-    }
-
-    @Shadow
-    protected abstract void updateButtonText();
-
-    @Shadow
-    private int difficultyID;
-    @Unique
-    private GuiButton buttonRulesEditor;
-    @Unique
-    private int currentTab = 100;
-    @Unique
-    private final List<GuiButton> tabButtons = new ArrayList<>();
-    @Unique
-    private static final int TAB_WIDTH = 130;
-    @Unique
-    private static final int TAB_HEIGHT = 24;
-    @Unique
-    private final Map<Integer, String> hoverTexts = new HashMap<>();
+    @Unique private GuiButton buttonRulesEditor;
+    @Unique private int currentTab = 100;
+    @Unique private final List<GuiButton> tabButtons = new ArrayList<>();
+    @Unique private static final int TAB_WIDTH = 130;
+    @Unique private static final int TAB_HEIGHT = 24;
+    @Unique private final Map<Integer, String> hoverTexts = new HashMap<>();
 
     @Inject(method = "initGui", at = @At("TAIL"))
     private void onInitGuiTail(CallbackInfo ci) {
@@ -315,12 +280,10 @@ public abstract class GuiCreateWorldMixin extends GuiScreen {
         updateButtonText();
     }
 
-    /**
-     * @author dfdvdsf
-     * @reason Enhance the vanilla
-     */
-    @Overwrite
-    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+    @Inject(method = "drawScreen", at = @At("HEAD"), cancellable = true)
+    public void modifyDrawScreen(int mouseX, int mouseY, float partialTicks, CallbackInfo ci) {
+        ci.cancel();
+
         this.drawBackground(0);
 
 //        if (!this.mc.gameSettings.isTransparentBackground())

@@ -63,65 +63,65 @@ public class NetClientHandlerMixin {
 //        instance.playAuxSFX(sfxType, x, y, z, auxData);
 //    }
 
-    private float adjustSoundVolume(String soundName, float originalVolume) {
-        float multiplier = 1.0f;
+//    private float adjustSoundVolume(String soundName, float originalVolume) {
+//        float multiplier = 1.0f;
+//
+//        if (soundName == null) {
+//            return originalVolume * this.mc.gameSettings.getAmbientVolume();
+//        }
+//
+//        String lowerSound = soundName.toLowerCase();
+//
+//        if (lowerSound.contains("player") || lowerSound.contains("damage") ||
+//                lowerSound.contains("hurt") || lowerSound.contains("death")) {
+//            multiplier = this.mc.gameSettings.getPlayerVolume();
+//        } else if (lowerSound.contains("mob") || lowerSound.contains("zombie") ||
+//                lowerSound.contains("skeleton") || lowerSound.contains("creeper") ||
+//                lowerSound.contains("spider") || lowerSound.contains("enderman") ||
+//                lowerSound.contains("ghast") || lowerSound.contains("slime") ||
+//                lowerSound.contains("witch") || lowerSound.contains("wither")) {
+//            multiplier = this.mc.gameSettings.getHostileVolume();
+//        } else if (lowerSound.contains("animal") || lowerSound.contains("cow") ||
+//                lowerSound.contains("pig") || lowerSound.contains("sheep") ||
+//                lowerSound.contains("chicken") || lowerSound.contains("wolf") ||
+//                lowerSound.contains("ocelot") || lowerSound.contains("horse") ||
+//                lowerSound.contains("villager") || lowerSound.contains("bat")) {
+//            multiplier = this.mc.gameSettings.getNeutralVolume();
+//        } else if (lowerSound.contains("step") || lowerSound.contains("dig") ||
+//                lowerSound.contains("place") || lowerSound.contains("break") ||
+//                lowerSound.contains("door") || lowerSound.contains("chest") ||
+//                lowerSound.contains("piston") || lowerSound.contains("lever") ||
+//                lowerSound.contains("button") || lowerSound.contains("random") ||
+//                lowerSound.contains("fire") || lowerSound.contains("explode") ||
+//                lowerSound.contains("fizz") || lowerSound.contains("pop") ||
+//                lowerSound.contains("orb")) {
+//            multiplier = this.mc.gameSettings.getBlockVolume();
+//        } else if (lowerSound.contains("ui") || lowerSound.contains("menu") ||
+//                lowerSound.contains("click") || lowerSound.contains("select")) {
+//            multiplier = this.mc.gameSettings.getUIVolume();
+//        } else if (lowerSound.contains("ambient") || lowerSound.contains("weather") ||
+//                lowerSound.contains("rain") || lowerSound.contains("thunder") ||
+//                lowerSound.contains("wind") || lowerSound.contains("water") ||
+//                lowerSound.contains("lava") || lowerSound.contains("portal")) {
+//            multiplier = this.mc.gameSettings.getAmbientVolume();
+//        } else if (lowerSound.contains("record") || lowerSound.contains("music") ||
+//                lowerSound.contains("note")) {
+//            multiplier = this.mc.gameSettings.getRecordVolume();
+//        } else {
+//            multiplier = this.mc.gameSettings.getAmbientVolume();
+//        }
+//
+//        return originalVolume * multiplier;
+//    }
 
-        if (soundName == null) {
-            return originalVolume * this.mc.gameSettings.getAmbientVolume();
-        }
-
-        String lowerSound = soundName.toLowerCase();
-
-        if (lowerSound.contains("player") || lowerSound.contains("damage") ||
-                lowerSound.contains("hurt") || lowerSound.contains("death")) {
-            multiplier = this.mc.gameSettings.getPlayerVolume();
-        } else if (lowerSound.contains("mob") || lowerSound.contains("zombie") ||
-                lowerSound.contains("skeleton") || lowerSound.contains("creeper") ||
-                lowerSound.contains("spider") || lowerSound.contains("enderman") ||
-                lowerSound.contains("ghast") || lowerSound.contains("slime") ||
-                lowerSound.contains("witch") || lowerSound.contains("wither")) {
-            multiplier = this.mc.gameSettings.getHostileVolume();
-        } else if (lowerSound.contains("animal") || lowerSound.contains("cow") ||
-                lowerSound.contains("pig") || lowerSound.contains("sheep") ||
-                lowerSound.contains("chicken") || lowerSound.contains("wolf") ||
-                lowerSound.contains("ocelot") || lowerSound.contains("horse") ||
-                lowerSound.contains("villager") || lowerSound.contains("bat")) {
-            multiplier = this.mc.gameSettings.getNeutralVolume();
-        } else if (lowerSound.contains("step") || lowerSound.contains("dig") ||
-                lowerSound.contains("place") || lowerSound.contains("break") ||
-                lowerSound.contains("door") || lowerSound.contains("chest") ||
-                lowerSound.contains("piston") || lowerSound.contains("lever") ||
-                lowerSound.contains("button") || lowerSound.contains("random") ||
-                lowerSound.contains("fire") || lowerSound.contains("explode") ||
-                lowerSound.contains("fizz") || lowerSound.contains("pop") ||
-                lowerSound.contains("orb")) {
-            multiplier = this.mc.gameSettings.getBlockVolume();
-        } else if (lowerSound.contains("ui") || lowerSound.contains("menu") ||
-                lowerSound.contains("click") || lowerSound.contains("select")) {
-            multiplier = this.mc.gameSettings.getUIVolume();
-        } else if (lowerSound.contains("ambient") || lowerSound.contains("weather") ||
-                lowerSound.contains("rain") || lowerSound.contains("thunder") ||
-                lowerSound.contains("wind") || lowerSound.contains("water") ||
-                lowerSound.contains("lava") || lowerSound.contains("portal")) {
-            multiplier = this.mc.gameSettings.getAmbientVolume();
-        } else if (lowerSound.contains("record") || lowerSound.contains("music") ||
-                lowerSound.contains("note")) {
-            multiplier = this.mc.gameSettings.getRecordVolume();
-        } else {
-            multiplier = this.mc.gameSettings.getAmbientVolume();
-        }
-
-        return originalVolume * multiplier;
-    }
-
-    private float getAuxSFXVolumeMultiplier(int sfxType) {
-        return switch (sfxType) {
-            case 1000, 1001 -> this.mc.gameSettings.getRecordVolume();
-            case 1002, 1003, 1004 -> this.mc.gameSettings.getBlockVolume();
-            case 1005, 1006 -> this.mc.gameSettings.getHostileVolume();
-            default -> this.mc.gameSettings.getAmbientVolume();
-        };
-    }
+//    private float getAuxSFXVolumeMultiplier(int sfxType) {
+//        return switch (sfxType) {
+//            case 1000, 1001 -> this.mc.gameSettings.getRecordVolume();
+//            case 1002, 1003, 1004 -> this.mc.gameSettings.getBlockVolume();
+//            case 1005, 1006 -> this.mc.gameSettings.getHostileVolume();
+//            default -> this.mc.gameSettings.getAmbientVolume();
+//        };
+//    }
 
     @Redirect(method = "handleGameEvent", at = @At(value = "INVOKE",
             target = "Lnet/minecraft/src/WorldClient;playSound(DDDLjava/lang/String;FFZ)V"))

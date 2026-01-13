@@ -7,6 +7,7 @@ import net.minecraft.src.ResourceLocation;
 import net.minecraft.src.TextureManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -16,9 +17,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.HashMap;
 import java.util.Map;
 
-@Mixin({FontRenderer.class})
+@Mixin(value = FontRenderer.class, priority = 1001)
 public class FontRendererMixin {
-    private static final Map<FontRenderer, FontFixer> registeredFixers = new HashMap();
+    @Unique private static final Map<FontRenderer, FontFixer> registeredFixers = new HashMap<>();
 
     @Inject(method = {"<init>"}, at = {@At("TAIL")})
     private void init2(GameSettings par1GameSettings, ResourceLocation par2ResourceLocation, TextureManager par3TextureManager, boolean par4, CallbackInfo ci) {

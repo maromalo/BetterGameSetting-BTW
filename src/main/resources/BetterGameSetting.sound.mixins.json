@@ -33,7 +33,6 @@
     "item.ItemFlintAndSteelMixin",
     "item.ItemFoodMixin",
     "network.NetClientHandlerMixin",
-    "server.PlayerControllerMPMixin",
     "world.ExplosionMixin",
     "world.WorldMixin"
   ],

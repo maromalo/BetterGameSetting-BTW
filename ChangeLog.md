@@ -1,5 +1,12 @@
 # Better Game Setting for BTW
 
+### v1.3.0.1
+* Fixed some compatibility issues
+* Fixed an unresponsive issue
+* Optimized code
+
+---
+
 ### v1.3.0
 * Adapted for 3.0.0 Release.
 * Optimized key bindings; now supports resetting mod keys.

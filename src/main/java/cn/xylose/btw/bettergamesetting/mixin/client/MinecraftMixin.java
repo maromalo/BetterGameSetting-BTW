@@ -4,6 +4,7 @@ import cn.xylose.btw.bettergamesetting.init.BGSClient;
 import cn.xylose.btw.bettergamesetting.util.GuiScreenPanoramaHelp;
 import com.github.skystardust.InputMethodBlocker.NativeUtils;
 import com.github.skystardust.InputMethodBlocker.compat.InputMethodHandler;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.src.*;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
@@ -17,7 +18,6 @@ import java.util.Map;
 public abstract class MinecraftMixin {
     @Shadow public GameSettings gameSettings;
     @Shadow public GuiScreen currentScreen;
-
     @Shadow public abstract IntegratedServer getIntegratedServer();
 
     @Inject(method = "runGameLoop", at = @At("HEAD"))
@@ -30,12 +30,8 @@ public abstract class MinecraftMixin {
             this.gameSettings.renderDistance = 12;
     }
 
-    /**
-     * @author Xy_Lose
-     * @reason break Fps limit & optimize GuiMainMenu
-     */
-    @Overwrite
-    private int getLimitFramerate() {
+    @ModifyReturnValue(method = "getLimitFramerate", at = @At("RETURN"))
+    private int getLimitFps(int original) {
         if (this.currentScreen != null && (this.currentScreen instanceof GuiMainMenu)) {
             return 60;
         }
